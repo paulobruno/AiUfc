@@ -56,6 +56,8 @@ class Puzzle
 		void rotateClockwise();
 		void rotateCounterClockwise();
 		void moveRight();
+		
+		bool gameWon();
 };
 
 

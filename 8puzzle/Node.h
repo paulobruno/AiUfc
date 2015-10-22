@@ -17,8 +17,8 @@ class Node
 		Node(Node* parent, int value);
 		~Node();
 
-		void depthVisit(std::vector<Node*> vector);
-		void breadthVisit(std::deque<Node*>* deque);
+		bool depthVisit(std::vector<Node*> vector, std::vector<Node*>* visitedNodes);
+		bool breadthVisit(std::deque<Node*>* deque, std::vector<Node*>* visitedNodes);
 
 		void addChild(Node* c);
 		
@@ -31,6 +31,10 @@ class Node
 		
 		Node* parent;
 		std::vector<Node*> child;
+
+
+		bool notVisited(std::vector<Node*>* visitedNodes);
+		bool gameWon();
 };
 
 

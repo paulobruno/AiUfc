@@ -10,7 +10,7 @@
 
 
 int main(const int argc, const char* argv[])
-{
+{/*
 	unsigned int tiles[9] = {1, 2, 0, 4, 5, 3, 7, 8, 6};
 	
 
@@ -25,7 +25,7 @@ int main(const int argc, const char* argv[])
 	p.show();
 	p.shiftDown();
 	p.show();
-	/*
+	*/
 	
 	
 	Node root(NULL, 1);
@@ -40,6 +40,9 @@ int main(const int argc, const char* argv[])
 	Node n5(&n3, 5);
 	Node n10(&n9, 10);
 	Node n11(&n9, 11);
+	
+	Node n23(&n5, 2);
+	//Node n54(&n6, 8);
 		
 	Tree tree(&root);
 	
@@ -63,7 +66,7 @@ int main(const int argc, const char* argv[])
 	{
 		std::cout << "erro: argumento em branco use 'breadth' ou 'depth'\n";
 	}
-*/
+
 
 	return EXIT_SUCCESS;
 }

@@ -137,10 +137,7 @@ void Puzzle::moveRight()
 	unsigned int zeroPosition = getZeroPosition();
 
 	switch (zeroPosition)
-	{
-		case TOP_LEFT:
-		break;
-		
+	{		
 		case TOP_CENTER:
 			tile[TOP_CENTER] = tile[TOP_LEFT];
 			tile[TOP_LEFT] = 0;
@@ -150,10 +147,7 @@ void Puzzle::moveRight()
 			tile[TOP_RIGHT] = tile[TOP_CENTER];
 			tile[TOP_CENTER] = 0;
 		break;
-	
-		case MIDDLE_LEFT:
-		break;
-		
+			
 		case MIDDLE_CENTER:
 			tile[MIDDLE_CENTER] = tile[MIDDLE_LEFT];
 			tile[MIDDLE_LEFT] = 0;
@@ -162,9 +156,6 @@ void Puzzle::moveRight()
 		case MIDDLE_RIGHT:
 			tile[MIDDLE_RIGHT] = tile[MIDDLE_CENTER];
 			tile[MIDDLE_CENTER] = 0;
-		break;
-		
-		case BOTTOM_LEFT:
 		break;
 		
 		case BOTTOM_CENTER:
@@ -183,3 +174,52 @@ void Puzzle::moveRight()
 }
 
 
+bool Puzzle::gameWon()
+{
+	if (tile[TOP_LEFT] != 1)
+	{
+		return false;
+	}
+	
+	if (tile[TOP_CENTER] != 2)
+	{
+		return false;
+	}
+	
+	if (tile[TOP_RIGHT] != 3)
+	{
+		return false;
+	}
+	
+	if (tile[MIDDLE_LEFT] != 4)
+	{
+		return false;
+	}
+		
+	if (tile[MIDDLE_CENTER] != 5)
+	{
+		return false;
+	}
+	
+	if (tile[MIDDLE_RIGHT] != 6)
+	{
+		return false;
+	}
+	
+	if (tile[BOTTOM_LEFT] != 7)
+	{
+		return false;
+	}
+		
+	if (tile[BOTTOM_CENTER] != 8)
+	{
+		return false;
+	}
+	
+	if (tile[BOTTOM_RIGHT] != 0)
+	{
+		return false;
+	}
+	
+	return true;
+}

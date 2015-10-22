@@ -20,11 +20,13 @@ class Tree
 
 		void breadthSearch();
 		void depthSearch();
-		
+				
 
 	private:
 	
 		Node* root;
+		
+		std::vector<Node*> visitedNodes;
 		
 		std::vector<Node*> nodes;
 		std::deque<Node*> breadthNodes;
