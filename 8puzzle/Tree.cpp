@@ -27,11 +27,12 @@ void Tree::breadthSearch()
 			breadthNodes.pop_front();
 		}
 		
-		for (unsigned int i = 0; i < visitedNodes.size(); ++i)
+		// print states		
+		/*for (unsigned int i = 0; i < visitedNodes.size(); ++i)
 		{
-			std::cout << visitedNodes[i]->getValue() << ' ';
-		}
-		std::cout << '\n';
+			visitedNodes[i]->show();
+			printf("\n");
+		}*/
 	}
 }
 
@@ -48,10 +49,11 @@ void Tree::depthSearch()
 			nodes.pop_back();
 		}
 		
-		for (unsigned int i = 0; i < visitedNodes.size(); ++i)
+		// print states
+		/*for (unsigned int i = 0; i < visitedNodes.size(); ++i)
 		{
-			std::cout << visitedNodes[i]->getValue() << ' ';
-		}
-		std::cout << '\n';
+			visitedNodes[i]->show();
+			printf("\n");
+		}*/
 	}
 }

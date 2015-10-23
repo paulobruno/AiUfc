@@ -40,10 +40,10 @@ build:
 .PHONY: clean cleanall
 
 clean:
-	@$(RM) $(OBJDIR) *.o *~
+	@$(RM) $(OBJDIR) *.o *~ *.txt
 
 cleanall:
-	@$(RM) $(EXEC) $(OBJDIR) *.o *~
+	@$(RM) $(EXEC) $(OBJDIR) *.o *~ *.txt
 
 help:
 	@echo "# "

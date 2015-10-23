@@ -4,48 +4,22 @@
 
 #include <iostream>
 
-#include "Puzzle.h"
+//#include "Puzzle.h"
 #include "Node.h"
 #include "Tree.h"
 
 
 int main(const int argc, const char* argv[])
-{/*
-	unsigned int tiles[9] = {1, 2, 0, 4, 5, 3, 7, 8, 6};
-	
+{
+//	unsigned int tiles[9] = {1, 2, 0, 4, 5, 3, 7, 8, 6};
+	unsigned int tiles[9] = {0, 1, 3, 4, 2, 5, 7, 8, 6};
 
-	Puzzle p(tiles);
+	Node root(tiles);
 	
-	p.show();
-	p.shiftLeft();
-	p.show();
-	p.shiftUp();
-	p.show();
-	p.shiftLeft();
-	p.show();
-	p.shiftDown();
-	p.show();
-	*/
-	
-	
-	Node root(NULL, 1);
-	Node n2(&root, 2);
-	Node n7(&root, 7);
-	Node n8(&root, 8);
-	Node n3(&n2, 3);
-	Node n6(&n2, 6);
-	Node n9(&n8, 9);
-	Node n12(&n8, 12);
-	Node n4(&n3, 4);
-	Node n5(&n3, 5);
-	Node n10(&n9, 10);
-	Node n11(&n9, 11);
-	
-	Node n23(&n5, 2);
-	//Node n54(&n6, 8);
-		
 	Tree tree(&root);
-	
+	tree.breadthSearch();
+		
+/*
 	
 	if (argc > 1)
 	{
@@ -65,7 +39,7 @@ int main(const int argc, const char* argv[])
 	else
 	{
 		std::cout << "erro: argumento em branco use 'breadth' ou 'depth'\n";
-	}
+	}*/
 
 
 	return EXIT_SUCCESS;
