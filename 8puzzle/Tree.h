@@ -13,23 +13,28 @@
 
 class Tree
 {
-	public:
-	
-		Tree(Node* root);
-		~Tree();
+    public:
 
-		void breadthSearch();
-		void depthSearch();
-				
+        Tree(Node* root);
+        ~Tree();
 
-	private:
-	
-		Node* root;
-		
-		std::vector<Node*> visitedNodes;
-		
-		std::vector<Node*> nodes;
-		std::deque<Node*> breadthNodes;
+        void breadthSearch();
+        void depthSearch();
+        void aStarSearch();
+
+
+    private:
+
+        Node* root;
+
+        std::vector<Node*> visitedNodes;
+
+        std::vector<Node*> nodes;
+        std::deque<Node*> breadthNodes;
+        std::deque<Node*> aStarNodes;
+
+
+        void printVisitedNodes();
 };
 
 
