@@ -27,7 +27,8 @@ class Tree
 
         Node* root;
 
-        std::vector<Node*> visitedNodes;
+        //std::vector<Node*> visitedNodes;
+        std::vector<bool> visitedNodes;
 
         std::vector<Node*> nodes;
         std::deque<Node*> breadthNodes;

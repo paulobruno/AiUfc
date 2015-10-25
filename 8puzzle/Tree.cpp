@@ -3,7 +3,14 @@
 
 Tree::Tree(Node* root)
     : root(root)
-{}
+{
+    visitedNodes.reserve(362880);
+
+    for (unsigned i = 0; i < 362880; ++i)
+    {
+        visitedNodes.push_back(false);
+    }
+}
 
 
 Tree::~Tree()
@@ -85,9 +92,9 @@ void Tree::aStarSearch()
 
 
 void Tree::printVisitedNodes()
-{
+{/*
     for (unsigned int i = 0; i < visitedNodes.size(); ++i)
     {
         visitedNodes[i]->show();
-    }
+    }*/
 }

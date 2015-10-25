@@ -40,9 +40,9 @@ class Node
         Node(const Node& n);
         ~Node();
 
-        bool depthVisit(std::vector<Node*>* vector, std::vector<Node*>* visitedNodes);
-        bool breadthVisit(std::deque<Node*>* deque, std::vector<Node*>* visitedNodes);
-        bool aStarVisit(std::deque<Node*>* deque, std::vector<Node*>* visitedNodes);
+        bool depthVisit(std::vector<Node*>* vector, std::vector<bool>* visitedNodes);
+        bool breadthVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes);
+        bool aStarVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes);
 
 
         void show();
@@ -124,7 +124,7 @@ class Node
 
         bool gameWon();
 
-        bool notVisited(std::vector<Node*>* visitedNodes);
+        bool notVisited(std::vector<bool>* visitedNodes);
 
         void buildStateNumber();
         unsigned buildNumber(unsigned* A, unsigned n, unsigned lessers[]);

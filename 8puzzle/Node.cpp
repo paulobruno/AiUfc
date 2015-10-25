@@ -58,9 +58,11 @@ Node::~Node()
 
 
 // returns true if this node or a descendent is the goal
-bool Node::depthVisit(std::vector<Node*>* vector, std::vector<Node*>* visitedNodes)
+bool Node::depthVisit(std::vector<Node*>* vector, std::vector<bool>* visitedNodes)
 {
-    visitedNodes->push_back(this);
+    visitedNodes->at(stateNumber) = true;
+    show();
+
 
     if (gameWon())
     {
@@ -161,9 +163,82 @@ bool Node::depthVisit(std::vector<Node*>* vector, std::vector<Node*>* visitedNod
 
 
 // returns true if this node is the goal
-bool Node::breadthVisit(std::deque<Node*>* deque, std::vector<Node*>* visitedNodes)
+bool Node::breadthVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes)
 {
-    visitedNodes->push_back(this);
+    visitedNodes->at(stateNumber) = true;
+    show();
+
+    if (gameWon())
+    {
+        return true;
+    }
+
+
+    if (Node* n = shiftLeft())
+    {
+        if (n->notVisited(visitedNodes))
+        {
+            child.push_back(n);
+            deque->push_back(n);
+            n->setHeight(height+1);
+        }
+        else
+        {
+            delete n;
+        }
+    }
+
+    if (Node* n = shiftUp())
+    {
+        if (n->notVisited(visitedNodes))
+        {
+            child.push_back(n);
+            deque->push_back(n);
+            n->setHeight(height+1);
+        }
+        else
+        {
+            delete n;
+        }
+    }
+
+    if (Node* n = shiftRight())
+    {
+        if (n->notVisited(visitedNodes))
+        {
+            child.push_back(n);
+            deque->push_back(n);
+            n->setHeight(height+1);
+        }
+        else
+        {
+            delete n;
+        }
+    }
+
+    if (Node* n = shiftDown())
+    {
+        if (n->notVisited(visitedNodes))
+        {
+            child.push_back(n);
+            deque->push_back(n);
+            n->setHeight(height+1);
+        }
+        else
+        {
+            delete n;
+        }
+    }
+
+
+    return false;
+}
+
+
+bool Node::aStarVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes)
+{
+    visitedNodes->at(stateNumber) = true;
+    show();
 
 
     if (gameWon())
@@ -233,80 +308,15 @@ bool Node::breadthVisit(std::deque<Node*>* deque, std::vector<Node*>* visitedNod
 }
 
 
-bool Node::aStarVisit(std::deque<Node*>* deque, std::vector<Node*>* visitedNodes)
+bool Node::notVisited(std::vector<bool>* visitedNodes)
 {
-    visitedNodes->push_back(this);
-
-
-    if (gameWon())
+    if (visitedNodes->at(stateNumber))
     {
-        return true;
+        return false;
     }
 
-
-    if (Node* n = shiftLeft())
-    {
-        if (n->notVisited(visitedNodes))
-        {
-            child.push_back(n);
-            deque->push_back(n);
-            n->setHeight(height+1);
-        }
-        else
-        {
-            delete n;
-        }
-    }
-
-    if (Node* n = shiftUp())
-    {
-        if (n->notVisited(visitedNodes))
-        {
-            child.push_back(n);
-            deque->push_back(n);
-            n->setHeight(height+1);
-        }
-        else
-        {
-            delete n;
-        }
-    }
-
-    if (Node* n = shiftRight())
-    {
-        if (n->notVisited(visitedNodes))
-        {
-            child.push_back(n);
-            deque->push_back(n);
-            n->setHeight(height+1);
-        }
-        else
-        {
-            delete n;
-        }
-    }
-
-    if (Node* n = shiftDown())
-    {
-        if (n->notVisited(visitedNodes))
-        {
-            child.push_back(n);
-            deque->push_back(n);
-            n->setHeight(height+1);
-        }
-        else
-        {
-            delete n;
-        }
-    }
-
-
-    return false;
-}
-
-
-bool Node::notVisited(std::vector<Node*>* visitedNodes)
-{
+    return true;
+    /*
     for (unsigned int i = 0; i < visitedNodes->size(); ++i)
     {
         if (*this == *visitedNodes->at(i))
@@ -315,14 +325,14 @@ bool Node::notVisited(std::vector<Node*>* visitedNodes)
         }
     }
 	
-    return true;
+    return true;*/
 }
 
 
 void Node::show()
 {
     // saida em arquivo
-
+/*
     FILE *fp;
 
     fp = fopen("saida.txt", "a");
@@ -364,7 +374,7 @@ void Node::show()
         printf("\n");
     }
 
-    printf("\n");
+    printf("\n");*/
 }
 
 
