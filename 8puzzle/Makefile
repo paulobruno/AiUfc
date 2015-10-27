@@ -37,13 +37,16 @@ $(OBJECTS): $(OBJDIR)/%.o : %.cpp
 build:
 	@mkdir -p $(OBJDIR)
 	
-.PHONY: clean cleanall
+.PHONY: clean cleanall cleantxt
 
 clean:
 	@$(RM) $(OBJDIR) *.o *~ *.txt
 
 cleanall:
 	@$(RM) $(EXEC) $(OBJDIR) *.o *~ *.txt
+
+cleantxt:
+	@$(RM) *.txt
 
 help:
 	@echo "# "

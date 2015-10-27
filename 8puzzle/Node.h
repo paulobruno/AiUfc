@@ -7,10 +7,12 @@
 
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <iostream>
 #include <vector>
 #include <deque>
+#include <queue>
 
 
 #define NUM_OF_TILES 9
@@ -36,16 +38,20 @@ class Node
 {
     public:
 
-        Node(unsigned int* tiles);
+        Node();
         Node(const Node& n);
         ~Node();
+
+        bool initialize(unsigned* tiles);
 
         bool depthVisit(std::vector<Node*>* vector, std::vector<bool>* visitedNodes);
         bool breadthVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes);
         bool aStarVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes);
+//        bool aStarVisit(std::priority_queue<Node*, std::deque<Node*>, NodeCompare>* queue, std::vector<bool>* visitedNodes);
 
 
         void show();
+        void showScreen();
 
         Node* shiftUp();
         Node* shiftDown();
@@ -56,6 +62,8 @@ class Node
 
         unsigned getHeight() {return height;}
         void setHeight(unsigned h) {height = h;}
+        unsigned getCost() const {return cost;}
+        void setCost(unsigned c) {cost = c;}
 
 
         Node& operator= (const Node& n2)
@@ -106,12 +114,18 @@ class Node
             return false;
         }
 
+        bool operator< (const Node& n2)
+        {
+                return (this->getCost() < n2.getCost());
+        }
+
 
     private:
 	
         unsigned int tile[NUM_OF_TILES];
         unsigned int stateNumber;
         unsigned height;
+        unsigned cost;
 
         std::vector<Node*> child;
 
@@ -129,7 +143,11 @@ class Node
         void buildStateNumber();
         unsigned buildNumber(unsigned* A, unsigned n, unsigned lessers[]);
         unsigned factorial(unsigned n);
+        bool isNotSolvable();
+        
+		unsigned int distanceToGoal();
+		unsigned int tilesOutOfPlace();
 };
 
-
+		
 #endif // NODE_H

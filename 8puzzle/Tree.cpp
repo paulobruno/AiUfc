@@ -73,16 +73,20 @@ void Tree::aStarSearch()
 
         while (!aStarNodes.empty())
         {
+			//aStarNodes.front()->showScreen();
+			
             // se chegou no objetivo para
             if (aStarNodes.front()->aStarVisit(&aStarNodes, &visitedNodes))
             {
                 break;
             }
 
+                //printVisitedNodes();
             aStarNodes.pop_front();
+                        std::sort(aStarNodes.begin(), aStarNodes.end(), ptr_comparison<Node>());
         }
 
-        printVisitedNodes();
+        //printVisitedNodes();
     }
     else
     {
@@ -92,9 +96,10 @@ void Tree::aStarSearch()
 
 
 void Tree::printVisitedNodes()
-{/*
-    for (unsigned int i = 0; i < visitedNodes.size(); ++i)
+{
+    for (unsigned int i = 0; i < aStarNodes.size(); ++i)
     {
-        visitedNodes[i]->show();
-    }*/
+        aStarNodes[i]->showScreen();
+    }
+        printf("\n\n");
 }

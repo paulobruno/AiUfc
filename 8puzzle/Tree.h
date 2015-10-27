@@ -7,8 +7,17 @@
 
 #include <vector>
 #include <deque>
+#include <queue>
+#include <algorithm>
 
 #include "Node.h"
+
+
+template<class T>
+struct ptr_comparison
+{
+   bool operator()(T* a, T* b) { return *a < *b; }
+};
 
 
 class Tree
@@ -33,6 +42,7 @@ class Tree
         std::vector<Node*> nodes;
         std::deque<Node*> breadthNodes;
         std::deque<Node*> aStarNodes;
+//        std::priority_queue<Node*, std::deque<Node*>, NodeCompare> aStarNodes;
 
 
         void printVisitedNodes();
