@@ -1,10 +1,21 @@
+/*
+ * 344083 ITALO PEREIRA DE SOUSA
+ * 354086 PAULO BRUNO DE SOUSA SERAFIM
+ * 333491 RAPHAELL DYEGO CRUZ VAZ
+ *
+ * October, 2015, Fortaleza - CE, Brasil
+ */
+
+
 #include "Tree.h"
 
 
 Tree::Tree(Node* root)
     : root(root)
 {
+    // 9! = 362880, number of combinations for a 0..8 set, the 8 puzzle
     visitedNodes.reserve(362880);
+
 
     for (unsigned i = 0; i < 362880; ++i)
     {
@@ -25,9 +36,9 @@ void Tree::breadthSearch()
     {
         breadthNodes.push_back(root);
 
+
         while (!breadthNodes.empty())
         {
-            // se chegou no objetivo para
             if (breadthNodes.front()->breadthVisit(&breadthNodes, &visitedNodes))
             {
                 break;
@@ -35,8 +46,6 @@ void Tree::breadthSearch()
 
             breadthNodes.pop_front();
         }
-
-        printVisitedNodes();
     }
     else
     {
@@ -49,14 +58,13 @@ void Tree::depthSearch()
 {	
     if (root)
     {
-        nodes.push_back(root);
+        depthNodes.push_back(root);
 
-        while (!nodes.empty())
+
+        while (!depthNodes.empty())
         {
-            nodes.back()->depthVisit(&nodes, &visitedNodes);
+            depthNodes.back()->depthVisit(&depthNodes, &visitedNodes);
         }
-
-        printVisitedNodes();
     }
     else
     {
@@ -71,22 +79,19 @@ void Tree::aStarSearch()
     {
         aStarNodes.push_back(root);
 
+
         while (!aStarNodes.empty())
         {
-			//aStarNodes.front()->showScreen();
-			
-            // se chegou no objetivo para
             if (aStarNodes.front()->aStarVisit(&aStarNodes, &visitedNodes))
             {
                 break;
             }
 
-                //printVisitedNodes();
-            aStarNodes.pop_front();
-                        std::sort(aStarNodes.begin(), aStarNodes.end(), ptr_comparison<Node>());
-        }
 
-        //printVisitedNodes();
+            //printNodes();
+            aStarNodes.pop_front();
+            std::sort(aStarNodes.begin(), aStarNodes.end(), ptr_comparison<Node>());
+        }
     }
     else
     {
@@ -95,11 +100,13 @@ void Tree::aStarSearch()
 }
 
 
-void Tree::printVisitedNodes()
+void Tree::printNodes()
 {
+    // print the content of xNodes, where x = depth | breadth | aStar
     for (unsigned int i = 0; i < aStarNodes.size(); ++i)
     {
         aStarNodes[i]->showScreen();
     }
-        printf("\n\n");
+
+    printf("\n\n");
 }

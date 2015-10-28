@@ -1,3 +1,12 @@
+/*
+ * 344083 ITALO PEREIRA DE SOUSA
+ * 354086 PAULO BRUNO DE SOUSA SERAFIM
+ * 333491 RAPHAELL DYEGO CRUZ VAZ
+ *
+ * October, 2015, Fortaleza - CE, Brasil
+ */
+
+
 #include "Node.h"
 
 
@@ -13,8 +22,8 @@ Node::Node(const Node& n)
     }
 
     buildStateNumber();
-    //cost = distanceToGoal();
-    cost = tilesOutOfPlace();
+    cost = distanceToGoal();
+    //cost = tilesOutOfPlace();
 }
 
 
@@ -33,6 +42,7 @@ bool Node::initialize(unsigned* tiles)
 {
     if (tiles)
     {
+        // verifica se contem valores > 8 ou < 0
         for (unsigned int i = 0; i < NUM_OF_TILES; ++i)
         {
             if ((*(tiles+i) > NUM_OF_TILES-1) || (*(tiles+i) < 0))
@@ -43,6 +53,7 @@ bool Node::initialize(unsigned* tiles)
 
             tile[i] = *(tiles+i);
         }
+
 
         // verifica se contem numeros de 0 a 8
         bool verification[NUM_OF_TILES] = {0};
@@ -58,19 +69,23 @@ bool Node::initialize(unsigned* tiles)
             verification[tile[i]] = true;
         }
 
+
         if (isNotSolvable())
         {
             std::cout << "Estado inicial incorreto: nao resolvivel\n";
             return false;
         }
 
+
         buildStateNumber();
         height = 0;
-        //cost = distanceToGoal();
-        cost = tilesOutOfPlace();
+        cost = distanceToGoal();
+        //cost = tilesOutOfPlace();
+
 
         return true;
     }
+
 
     std::cout << "Valores do estado nao especificados.\n";
 
@@ -82,7 +97,7 @@ bool Node::initialize(unsigned* tiles)
 bool Node::depthVisit(std::vector<Node*>* vector, std::vector<bool>* visitedNodes)
 {
     visitedNodes->at(stateNumber) = true;
-    show();
+    //showFile();
 
 
     if (gameWon())
@@ -183,11 +198,11 @@ bool Node::depthVisit(std::vector<Node*>* vector, std::vector<bool>* visitedNode
 }
 
 
-// returns true if this node is the goal
 bool Node::breadthVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes)
 {
     visitedNodes->at(stateNumber) = true;
-    show();
+    //showFile();
+
 
     if (gameWon())
     {
@@ -259,7 +274,8 @@ bool Node::breadthVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNode
 bool Node::aStarVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes)
 {
     visitedNodes->at(stateNumber) = true;
-    show();
+    //showFile();
+
 
     if (gameWon())
     {
@@ -272,8 +288,8 @@ bool Node::aStarVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes)
         if (n->notVisited(visitedNodes))
         {
             n->setHeight(height+1);
-            //n->setCost(n->distanceToGoal());
             deque->push_back(n);
+            child.push_back(n);
         }
         else
         {
@@ -286,8 +302,8 @@ bool Node::aStarVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes)
         if (n->notVisited(visitedNodes))
         {
             n->setHeight(height+1);
-            //n->setCost(n->distanceToGoal());
             deque->push_back(n);
+            child.push_back(n);
         }
         else
         {
@@ -300,8 +316,8 @@ bool Node::aStarVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes)
         if (n->notVisited(visitedNodes))
         {
             n->setHeight(height+1);
-            //n->setCost(n->distanceToGoal());
             deque->push_back(n);
+            child.push_back(n);
         }
         else
         {
@@ -314,8 +330,8 @@ bool Node::aStarVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes)
         if (n->notVisited(visitedNodes))
         {
             n->setHeight(height+1);
-            //n->setCost(n->distanceToGoal());
             deque->push_back(n);
+            child.push_back(n);
         }
         else
         {
@@ -339,10 +355,8 @@ bool Node::notVisited(std::vector<bool>* visitedNodes)
 }
 
 
-void Node::show()
+void Node::showFile()
 {
-    // saida em arquivo
-
     FILE *fp;
 
     fp = fopen("saida.txt", "a");
@@ -359,41 +373,17 @@ void Node::show()
             fprintf(fp,"%d ", tile[i*3+j]);
         }
 
-        //fprintf(fp,"\n");
         fprintf(fp," %u\n", cost);
     }
 
     fprintf(fp,"\n");
-    //fprintf(fp,"\t%u\n", cost);
 
     fclose(fp);
-
-/*
-    // saida em tela
-
-    for (int i = 0; i < 3; ++i)
-    {
-        for (unsigned h = 0; h < height; ++h)
-        {
-            printf("\t");
-        }
-
-        for (int j = 0; j < 3; ++j)
-        {
-            printf("%d ", tile[i*3+j]);
-        }
-
-        printf("\n");
-    }
-
-    printf("\n");*/
 }
 
 
 void Node::showScreen()
 {
-    // saida em tela
-
     for (int i = 0; i < 3; ++i)
     {
         for (unsigned h = 0; h < height; ++h)
@@ -646,10 +636,12 @@ void Node::buildStateNumber()
 {
     unsigned lessers[NUM_OF_TILES];
 
+
     for (unsigned i = 0; i < NUM_OF_TILES; ++i)
     {
         lessers[i] = i;
     }
+
 
     stateNumber = buildNumber(tile, NUM_OF_TILES, lessers);
 }
@@ -683,35 +675,38 @@ unsigned Node::factorial(unsigned n)
         return 1;
     }
 
+
     return (n * factorial(n - 1));
 }
 
 
 bool Node::isNotSolvable()
 {	
-	unsigned int count = 0;
-	
-	for (unsigned int i = 0; i < NUM_OF_TILES-1 ; ++i)
-	{
-	    for (unsigned int j = i + 1; j < NUM_OF_TILES; ++j)
-	    {
-	        if ((tile[i] != 0) && (tile[j] != 0) && (tile[i] > tile[j]))
-	        {
-	            ++count;
-	        }
-	    }
-	}
-	
-	if (!(count % 2))
-	{
-		// is solvable
-	    return false;
-	}
-	else
-	{
-		// not solvable
-	    return true;
-	}
+    unsigned int count = 0;
+
+
+    for (unsigned int i = 0; i < NUM_OF_TILES-1 ; ++i)
+    {
+        for (unsigned int j = i + 1; j < NUM_OF_TILES; ++j)
+        {
+            if ((tile[i] != 0) && (tile[j] != 0) && (tile[i] > tile[j]))
+            {
+                ++count;
+            }
+        }
+    }
+
+
+    if (!(count % 2))
+    {
+        // is solvable
+        return false;
+    }
+    else
+    {
+        // not solvable
+        return true;
+    }
 }
 
 
@@ -738,14 +733,14 @@ unsigned int Node::distanceToGoal()
     {
         if (tile[i] != i+1)
         {
-			if (tile[i] == 0)
-			{
-				count = count + status[NUM_OF_TILES-1][i];
-			}
-			else
-			{
-				count = count + status[tile[i]-1][i];
-			}
+            if (tile[i] == 0)
+            {
+                count = count + status[NUM_OF_TILES-1][i];
+            }
+            else
+            {
+                count = count + status[tile[i]-1][i];
+            }
         }
     }
     
@@ -755,7 +750,7 @@ unsigned int Node::distanceToGoal()
     }
     
     
-	return count;
+    return count;
 }
 
 
@@ -768,15 +763,15 @@ unsigned int Node::tilesOutOfPlace()
     {
         if (tile[i] != i+1)
         {
-			++count;
+            ++count;
         }
     }
     
     if (tile[NUM_OF_TILES-1] != 0)
     {
-    	++count;
-	}
-    
-    
-	return count;
+        ++count;
+    }
+
+
+    return count;
 }

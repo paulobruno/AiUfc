@@ -1,5 +1,10 @@
-// PAULO BRUNO DE SOUSA SERAFIM
-// October, 2015, Fortaleza - CE, Brasil
+/*
+ * 344083 ITALO PEREIRA DE SOUSA
+ * 354086 PAULO BRUNO DE SOUSA SERAFIM
+ * 333491 RAPHAELL DYEGO CRUZ VAZ
+ *
+ * October, 2015, Fortaleza - CE, Brasil
+ */
 
 
 #ifndef TREE_H
@@ -7,12 +12,13 @@
 
 #include <vector>
 #include <deque>
-#include <queue>
 #include <algorithm>
 
 #include "Node.h"
 
 
+// template used to sort the A star nodes deque
+// but can be used to sort every container of pointers
 template<class T>
 struct ptr_comparison
 {
@@ -36,16 +42,15 @@ class Tree
 
         Node* root;
 
-        //std::vector<Node*> visitedNodes;
         std::vector<bool> visitedNodes;
 
-        std::vector<Node*> nodes;
+        std::vector<Node*> depthNodes;
         std::deque<Node*> breadthNodes;
         std::deque<Node*> aStarNodes;
-//        std::priority_queue<Node*, std::deque<Node*>, NodeCompare> aStarNodes;
 
 
-        void printVisitedNodes();
+        // print one of the nodes vector/deque, used for debug
+        void printNodes();
 };
 
 

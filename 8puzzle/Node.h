@@ -1,5 +1,10 @@
-// PAULO BRUNO DE SOUSA SERAFIM
-// October, 2015, Fortaleza - CE, Brasil
+/*
+ * 344083 ITALO PEREIRA DE SOUSA
+ * 354086 PAULO BRUNO DE SOUSA SERAFIM
+ * 333491 RAPHAELL DYEGO CRUZ VAZ
+ *
+ * October, 2015, Fortaleza - CE, Brasil
+ */
 
 
 #ifndef NODE_H
@@ -12,7 +17,6 @@
 #include <iostream>
 #include <vector>
 #include <deque>
-#include <queue>
 
 
 #define NUM_OF_TILES 9
@@ -44,13 +48,12 @@ class Node
 
         bool initialize(unsigned* tiles);
 
+        // all above return true if the current node is the goal
         bool depthVisit(std::vector<Node*>* vector, std::vector<bool>* visitedNodes);
         bool breadthVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes);
         bool aStarVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes);
-//        bool aStarVisit(std::priority_queue<Node*, std::deque<Node*>, NodeCompare>* queue, std::vector<bool>* visitedNodes);
 
-
-        void show();
+        void showFile();
         void showScreen();
 
         Node* shiftUp();
@@ -58,12 +61,11 @@ class Node
         Node* shiftLeft();
         Node* shiftRight();
 
+        unsigned getCost() const {return cost;}
         unsigned getStateNumber() {return stateNumber;}
 
-        unsigned getHeight() {return height;}
         void setHeight(unsigned h) {height = h;}
-        unsigned getCost() const {return cost;}
-        void setCost(unsigned c) {cost = c;}
+        unsigned getHeight() {return height;}
 
 
         Node& operator= (const Node& n2)
@@ -137,7 +139,6 @@ class Node
         void moveRight();
 
         bool gameWon();
-
         bool notVisited(std::vector<bool>* visitedNodes);
 
         void buildStateNumber();
@@ -145,8 +146,9 @@ class Node
         unsigned factorial(unsigned n);
         bool isNotSolvable();
         
-		unsigned int distanceToGoal();
-		unsigned int tilesOutOfPlace();
+        // A* heuristics
+        unsigned int distanceToGoal();
+        unsigned int tilesOutOfPlace();
 };
 
 		
