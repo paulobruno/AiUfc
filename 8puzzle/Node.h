@@ -46,7 +46,7 @@ class Node
         Node(const Node& n);
         ~Node();
 
-        bool initialize(unsigned* tiles);
+        bool initialize(unsigned height, unsigned* tiles);
 
         // all above return true if the current node is the goal
         bool depthVisit(std::vector<Node*>* vector, std::vector<bool>* visitedNodes);
@@ -66,6 +66,8 @@ class Node
 
         void setHeight(unsigned h) {height = h;}
         unsigned getHeight() {return height;}
+
+        void update();
 
 
         Node& operator= (const Node& n2)

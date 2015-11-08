@@ -30,7 +30,7 @@ static timestamp_t get_timestamp ()
 
 int main(const int argc, const char* argv[])
 {
-        unsigned int tiles[9] = {1, 2, 0, 4, 5, 3, 7, 8, 6};
+        //unsigned int tiles[9] = {1, 2, 0, 4, 5, 3, 7, 8, 6};
         //unsigned int tiles[9] = {0, 1, 3, 4, 2, 5, 7, 8, 6};
         //unsigned int tiles[9] = {4, 0, 8, 2, 3, 5, 1, 6, 7};
         //unsigned int tiles[9] = {8, 5, 2, 3, 6, 0, 1, 7, 4};
@@ -38,12 +38,13 @@ int main(const int argc, const char* argv[])
         //unsigned int tiles[9] = {6, 5, 7, 4, 3, 8, 0, 1, 2};
         //unsigned int tiles[9] = {1, 2, 3, 4, 5, 6, 8, 0, 7}; // invalido
         //unsigned tiles[9] = {8, 1, 2, 0, 4, 3, 7, 6, 5}; // invalido
+        unsigned int tiles[9] = {1, 0, 6, 3, 2, 5, 7, 8, 4}; // a* dist = 3, a* tile = 8, b = 30, d = 54
 
 
         Node root;
 
 
-        if (root.initialize(tiles))
+        if (root.initialize(0, tiles))
         {
             timestamp_t inicio, fim;
             inicio = get_timestamp();
@@ -52,8 +53,8 @@ int main(const int argc, const char* argv[])
             Tree tree(&root);
 
             //tree.depthSearch();
-            //tree.breadthSearch();
-            tree.aStarSearch();
+            tree.breadthSearch();
+            //tree.aStarSearch();
 
 
             fim = get_timestamp();

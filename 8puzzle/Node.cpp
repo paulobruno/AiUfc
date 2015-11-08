@@ -22,8 +22,9 @@ Node::Node(const Node& n)
     }
 
     buildStateNumber();
-    cost = distanceToGoal();
-    //cost = tilesOutOfPlace();
+    height = n.height;
+    //cost = height + distanceToGoal();
+    cost = height + tilesOutOfPlace();
 }
 
 
@@ -38,7 +39,7 @@ Node::~Node()
 }
 
 
-bool Node::initialize(unsigned* tiles)
+bool Node::initialize(unsigned h, unsigned* tiles)
 {
     if (tiles)
     {
@@ -78,9 +79,9 @@ bool Node::initialize(unsigned* tiles)
 
 
         buildStateNumber();
-        height = 0;
-        cost = distanceToGoal();
-        //cost = tilesOutOfPlace();
+        height = h;
+        //cost = height + distanceToGoal();
+        cost = height + tilesOutOfPlace();
 
 
         return true;
@@ -114,7 +115,7 @@ bool Node::depthVisit(std::vector<Node*>* vector, std::vector<bool>* visitedNode
         {
             child.push_back(n);
             vector->push_back(n);
-            n->setHeight(height+1);
+            //n->setHeight(height+1);
 
             // if this child or a descendant is the goal stop returns true
             if (vector->back()->depthVisit(vector, visitedNodes))
@@ -135,7 +136,7 @@ bool Node::depthVisit(std::vector<Node*>* vector, std::vector<bool>* visitedNode
         {
             child.push_back(n);
             vector->push_back(n);
-            n->setHeight(height+1);
+            //n->setHeight(height+1);
 
             // if this child or a descendant is the goal stop returns true
             if (vector->back()->depthVisit(vector, visitedNodes))
@@ -156,7 +157,7 @@ bool Node::depthVisit(std::vector<Node*>* vector, std::vector<bool>* visitedNode
         {
             child.push_back(n);
             vector->push_back(n);
-            n->setHeight(height+1);
+            //n->setHeight(height+1);
 
             // if this child or a descendant is the goal stop returns true
             if (vector->back()->depthVisit(vector, visitedNodes))
@@ -177,7 +178,7 @@ bool Node::depthVisit(std::vector<Node*>* vector, std::vector<bool>* visitedNode
         {
             child.push_back(n);
             vector->push_back(n);
-            n->setHeight(height+1);
+            //n->setHeight(height+1);
 
             // if this child or a descendant is the goal stop returns true
             if (vector->back()->depthVisit(vector, visitedNodes))
@@ -201,7 +202,7 @@ bool Node::depthVisit(std::vector<Node*>* vector, std::vector<bool>* visitedNode
 bool Node::breadthVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes)
 {
     visitedNodes->at(stateNumber) = true;
-    //showFile();
+    showFile();
 
 
     if (gameWon())
@@ -216,7 +217,7 @@ bool Node::breadthVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNode
         {
             child.push_back(n);
             deque->push_back(n);
-            n->setHeight(height+1);
+            //n->setHeight(height+1);
         }
         else
         {
@@ -230,7 +231,7 @@ bool Node::breadthVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNode
         {
             child.push_back(n);
             deque->push_back(n);
-            n->setHeight(height+1);
+            //n->setHeight(height+1);
         }
         else
         {
@@ -244,7 +245,7 @@ bool Node::breadthVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNode
         {
             child.push_back(n);
             deque->push_back(n);
-            n->setHeight(height+1);
+            //n->setHeight(height+1);
         }
         else
         {
@@ -258,7 +259,7 @@ bool Node::breadthVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNode
         {
             child.push_back(n);
             deque->push_back(n);
-            n->setHeight(height+1);
+            //n->setHeight(height+1);
         }
         else
         {
@@ -274,7 +275,7 @@ bool Node::breadthVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNode
 bool Node::aStarVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes)
 {
     visitedNodes->at(stateNumber) = true;
-    //showFile();
+    showFile();
 
 
     if (gameWon())
@@ -287,7 +288,7 @@ bool Node::aStarVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes)
     {
         if (n->notVisited(visitedNodes))
         {
-            n->setHeight(height+1);
+            //n->setHeight(height+1);
             deque->push_back(n);
             child.push_back(n);
         }
@@ -301,7 +302,7 @@ bool Node::aStarVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes)
     {
         if (n->notVisited(visitedNodes))
         {
-            n->setHeight(height+1);
+            //n->setHeight(height+1);
             deque->push_back(n);
             child.push_back(n);
         }
@@ -315,7 +316,7 @@ bool Node::aStarVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes)
     {
         if (n->notVisited(visitedNodes))
         {
-            n->setHeight(height+1);
+            //n->setHeight(height+1);
             deque->push_back(n);
             child.push_back(n);
         }
@@ -329,7 +330,7 @@ bool Node::aStarVisit(std::deque<Node*>* deque, std::vector<bool>* visitedNodes)
     {
         if (n->notVisited(visitedNodes))
         {
-            n->setHeight(height+1);
+            //n->setHeight(height+1);
             deque->push_back(n);
             child.push_back(n);
         }
@@ -373,7 +374,7 @@ void Node::showFile()
             fprintf(fp,"%d ", tile[i*3+j]);
         }
 
-        fprintf(fp," %u\n", cost);
+        fprintf(fp,"  %u+%u=%u \n",distanceToGoal(), height,  cost);
     }
 
     fprintf(fp,"\n");
@@ -403,6 +404,14 @@ void Node::showScreen()
 }
 
 
+void Node::update()
+{
+    ++height;
+    //cost = height + distanceToGoal();
+    cost = height + tilesOutOfPlace();
+}
+
+
 Node* Node::shiftUp()
 {
     // if zero is at bottom return null
@@ -415,6 +424,7 @@ Node* Node::shiftUp()
         n.moveRight();
         n.rotateCounterClockwise();
 
+        n.update();
 
         return new Node(n);
     }
@@ -436,6 +446,7 @@ Node* Node::shiftDown()
         n.moveRight();
         n.rotateClockwise();
 
+        n.update();
 
         return new Node(n);
     }
@@ -459,6 +470,7 @@ Node* Node::shiftLeft()
         n.rotateCounterClockwise();
         n.rotateCounterClockwise();
 
+        n.update();
 
         return new Node(n);
     }
@@ -478,6 +490,7 @@ Node* Node::shiftRight()
 
         n.moveRight();
 
+        n.update();
 
         return new Node(n);
     }
@@ -775,3 +788,4 @@ unsigned int Node::tilesOutOfPlace()
 
     return count;
 }
+
