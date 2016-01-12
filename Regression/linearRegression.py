@@ -1,3 +1,8 @@
+# ITALO PEREIRA DE SOUSA            344083
+# PAULO BRUNO DE SOUSA SERAFIM      354086
+# RAPHAELL DYEGO CRUZ VAZ           333491
+
+
 import numpy as np
 
 
@@ -10,27 +15,33 @@ txt.close()
 
 # configuracao das matrizes de treinamento e teste
 
-npA = np.array(A) # cria array numpy de A
+X = np.array(A) # converte array simples para array numpy de A
 
-nrows = len(npA)
+nrows = len(X)
+ncols = len(X[0])
+
 onesCol = np.ones((nrows,1)) # cria coluna de um's
-npA = np.append(onesCol, npA, axis=1) # adiciona coluna de um's
+X = np.append(onesCol, X, axis=1) # adiciona coluna de um's
 
-np.random.shuffle(npA) # embaralha as linhas
-npA = np.split(npA, 2) # divide a matriz em duas
+np.random.shuffle(X) # embaralha as linhas
 
-Xtraining = npA[0] # primeira matriz eh a de treinamento
-Xtest = npA[1] # segunda eh a de testes
+Y = X[:, ncols] # Y eh a ultima coluna da matriz
+X = np.delete(X, ncols, 1) # delete a coluna Y da matriz
+
+
+# divisao das matrizes de treinamento e teste
+
+X = np.split(X, 2) # divide a matriz X em duas
+Xtraining = X[0] # primeira metade eh de treinamento
+Xtest = X[1] # segunda eh de testes
+
+Y = np.split(Y, 2) # analogo
+Ytraining = Y[0]
+Ytest = Y[1]
 
 
 # treinamento
 
-nrows = len(Xtraining)
-ncols = len(Xtraining[0])
-
-Ytraining = Xtraining[:,ncols-1] # y recebe a ultima coluna da matriz de dados
-
-Xtraining = np.delete(Xtraining, ncols-1, 1) # apaga a coluna y de x
 XtrainingT = Xtraining.transpose()
 
 a = np.dot(XtrainingT, Xtraining)
@@ -39,30 +50,21 @@ a = np.dot(a, XtrainingT)
 a = np.dot(a, Ytraining)
 
 
-# configuracao do teste
-
-nrows = len(Xtest)
-ncols = len(Xtest[0])
-
-Ytest = Xtest[:,ncols-1] # y recebe a ultima coluna da matriz de dados
-Xtest = np.delete(Xtest, ncols-1, 1) # apaga a coluna y de x
-
-
 # execucao
 
 newY = np.dot(Xtest, a)
 
-E = Ytest - newY
+Error = Ytest - newY
+ErrorRelative = Error / Ytest
+ErrorSquare = np.multiply(Error, Error)
+ErrorSquareRelative = np.multiply(ErrorRelative, ErrorRelative)
 
-Esquare = np.multiply(E, E)
+print "Mean Squared Error: " + str("%.4f" % (np.average(ErrorSquare)))
+print "Mean Squared Relative Error: " + str("%.4f" % (np.average(ErrorSquareRelative)))
 
 
-output = open('errorOutput.txt', 'w')
-np.savetxt(output, Esquare)
+# saida em arquivo
+
+output = open("linearRegressionResults.txt", "w")
+np.savetxt(output, zip(Ytest, newY, ErrorSquare), fmt="%.4f")
 output.close()
-
-print Ytest
-print newY
-print np.average(Esquare)
-#print E
-#print Esquare

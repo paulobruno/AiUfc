@@ -1,26 +1,45 @@
+# ITALO PEREIRA DE SOUSA            344083
+# PAULO BRUNO DE SOUSA SERAFIM      354086
+# RAPHAELL DYEGO CRUZ VAZ           333491
+
+
 import numpy as np
+import math
 
 
-# importacao de dados
-
+#Importando dados
 with open('pima-indians-diabetes.data') as txt:
-    A = [[float(x) for x in line.split(",")] for line in txt]
+	A = [[float(x) for x in line.split(",")] for line in txt]
 txt.close()
 
 
 # configuracao das matrizes de treinamento e teste
 
-npA = np.array(A) # cria array numpy de A
+X = np.array(A) # converte array simples para array numpy de A
 
-nrows = len(npA)
+nrows = len(X)
+ncols = len(X[0])
+
 onesCol = np.ones((nrows,1)) # cria coluna de um's
-npA = np.append(onesCol, npA, axis=1) # adiciona coluna de um's
+X = np.append(onesCol, X, axis=1) # adiciona coluna de um's
 
-np.random.shuffle(npA) # embaralha as linhas
-npA = np.split(npA, 2) # divide a matriz em duas
+np.random.shuffle(X) # embaralha as linhas
 
-Xtraining = npA[0] # primeira matriz eh a de treinamento
-Xtest = npA[1] # segunda eh a de testes
+Y = X[:, ncols] # Y eh a ultima coluna da matriz
+X = np.delete(X, ncols, 1) # delete a coluna Y da matriz
+
+X = (X - np.mean(X)) / np.std(X) # normalizacao
+
+
+# divisao das matrizes de treinamento e teste
+
+X = np.split(X, 2) # divide a matriz X em duas
+Xtraining = X[0] # primeira metade eh de treinamento
+Xtest = X[1] # segunda eh de testes
+
+Y = np.split(Y, 2) # analogo
+Ytraining = Y[0]
+Ytest = Y[1]
 
 
 # treinamento
@@ -28,40 +47,35 @@ Xtest = npA[1] # segunda eh a de testes
 nrows = len(Xtraining)
 ncols = len(Xtraining[0])
 
-Ytraining = Xtraining[:,ncols-1] # y recebe a ultima coluna da matriz de dados
+a = np.ones(ncols) # cria vetor linha de um's
+aT = a.transpose()
 
-Xtraining = np.delete(Xtraining, ncols-1, 1) # apaga a coluna y de x
-XtrainingT = Xtraining.transpose()
+alpha = 0.01
 
-a = np.dot(XtrainingT, Xtraining)
-a = np.linalg.inv(a)
-a = np.dot(a, XtrainingT)
-a = np.dot(a, Ytraining)
+for i in range(0, 100):
+	for j in range(0, nrows):
+		
+		Ynew = np.dot(Xtraining[j], aT)
+		h = 1 / (1 + math.exp(-Ynew))
+		
+		aT = aT + alpha * (Ytraining[j] - h) * h * (1 - h) * Xtraining[j] 
+		
+		
+# execucao dos testes
 
-
-# configuracao do teste
-
+count = 0
 nrows = len(Xtest)
-ncols = len(Xtest[0])
 
-Ytest = Xtest[:,ncols-1] # y recebe a ultima coluna da matriz de dados
-Xtest = np.delete(Xtest, ncols-1, 1) # apaga a coluna y de x
+for i in range (0, nrows):
+	result = np.dot(Xtest[i], aT)
+	
+	if (result > 0):
+		YtestNew = 1	
+	else:
+		YtestNew = 0
+		
+	if(Ytest[i] == YtestNew):
+		count += 1
 
 
-# execucao
-
-newY = np.dot(Xtest, a)
-
-E = Ytest - newY
-
-Esquare = np.multiply(E, E)
-
-output = open('errorOutput.txt', 'w')
-np.savetxt(output, Esquare)
-output.close()
-
-print Ytest
-print newY
-print np.average(Esquare)
-#print E
-#print Esquare
+print "Percentage of success: " + str("%.2f" % ((float(count) / float(nrows)) * 100)) + "%"
